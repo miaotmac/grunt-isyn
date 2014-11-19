@@ -1,0 +1,35 @@
+{
+  "name": "grunt-isyn",
+  "version": "0.0.1",
+  "description": "grunt isyn",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "./iSyn.sh"
+  },
+  "author": "ethanlai",
+  "license": "Apache 2.0",
+  "isyn": {
+    "localRootDirName": "vipstyle",
+    "remoteSyncPrefixPath": "/usr/local/imgcache/htdocs/vipstyle",
+    "ftp": {
+      "host": "119.147.200.113",
+      "port": "21000",
+      "authPath": ".ftppass",
+      "authKey": "grunt-isyn"
+    }
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-uglify": "~0.5.1",
+    "grunt-contrib-concat": "~0.5.0",
+    "grunt-contrib-cssmin": "~0.6.1",
+    "grunt-ftp-deploy": "~0.1.6",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-imagemin": "~0.8.1",
+    "grunt-pngmin": "~0.6.1",
+    "grunt-autoprefixer": "^1.0.1",
+    "fs-extra": "~0.11.1"
+  }
+}
