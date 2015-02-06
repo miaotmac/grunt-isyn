@@ -28,7 +28,6 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// js minify
 		uglify: {
 			options: {
 		      mangle: {
@@ -134,8 +133,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-autoprefixer');
 
 	// default
-	grunt.registerTask('default', ['copy','autoprefixer', 'cssmin', 'uglify', 'imagemin', 'pngmin', 'ftp-deploy', 'synclog']);
-
+	grunt.registerTask('default', ['copy','cssmin','imagemin', 'pngmin','uglify', 'ftp-deploy', 'synclog']);
+	grunt.registerTask('m', ['copy','autoprefixer','cssmin','imagemin', 'pngmin','uglify', 'ftp-deploy', 'synclog']);
 	// synclog
 	grunt.registerTask('synclog', 'log remote sync prefix paths.', function() {
 		console.log('Remote sync prefix paths:');
