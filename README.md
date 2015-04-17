@@ -22,6 +22,8 @@ $ rm -fr ../grunt-isyn
 初始化isyn：`node iSyn.sh`
 
 4. 开始使用吧。
+5. `grunt m` 针对手极端增加autoprefixer和sass支持
+6. `grunt mc` 手机端css默认压缩，并增加css-debug目录
 
 ## License
 Apache license, Version 2.0
