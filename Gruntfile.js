@@ -85,18 +85,18 @@ module.exports = function(grunt) {
 		},
 		autoprefixer: {
 
-            options: {
-                browsers: ['ios 5','android 2.3']
-            },
+            		options: {
+                		browsers: ['ios 5','android 2.3']
+            		},
 
-            // prefix all files
-            multiple_files: {
-                expand: true,
-                cwd: PWD,
-                src: ['**/*.css', '**/!*.min.css'],
-                dest: PWD
-            }
-        },
+            		// prefix all files
+            		multiple_files: {
+                		expand: true,
+                		cwd: PWD,
+                		src: ['**/*.css', '**/!*.min.css'],
+                		dest: PWD
+            		}
+        	},
 		// image compress
 		imagemin: {
 			compile: {
