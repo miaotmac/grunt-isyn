@@ -15,8 +15,6 @@
     "ftp": {
       "host": "119.147.200.113",
       "port": "21000",
-      "username": "vip_vipstyle",
-      "password": "img@vip345",
       "authPath": ".ftppass",
       "authKey": "grunt-isyn"
     }
