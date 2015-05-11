@@ -86,7 +86,7 @@ module.exports = function(grunt) {
 		autoprefixer: {
 
             options: {
-                browsers: ['ios 5','android 2.3']
+                browsers: ['last 2 versions','ios 5','android 2.3']
             },
 
             // prefix all files
