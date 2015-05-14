@@ -103,7 +103,7 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: PWD,
-					src: ['**/*.{jpg,gif}'],
+					src: ['**/*.{png,jpg,gif}'],
 					dest: PWD
 				}]
 			}
@@ -114,7 +114,7 @@ module.exports = function(grunt) {
 			compile: {
 				options: {
 					ext: '.png',
-					force: true, 
+					force: true 
 				},
 				files: [{
 					expand: true,
@@ -161,9 +161,11 @@ module.exports = function(grunt) {
 	
 
 	// default
-	grunt.registerTask('default', ['copy','cssmin:main','imagemin', 'pngmin','uglify', 'ftp-deploy', 'synclog']);
-	grunt.registerTask('mc', ['copy','sass','autoprefixer','cssmin','imagemin', 'pngmin','uglify', 'ftp-deploy', 'synclog','watch']);
-	grunt.registerTask('m', ['copy','sass:main','autoprefixer','cssmin:main','imagemin', 'pngmin','uglify', 'ftp-deploy', 'synclog']);
+	grunt.registerTask('default', ['copy','cssmin:main','imagemin','uglify', 'ftp-deploy', 'synclog']);
+	grunt.registerTask('debug', ['copy','sass','synclog','watch']);
+	grunt.registerTask('md', ['copy','sass','autoprefixer','synclog','watch']);
+	grunt.registerTask('m', ['copy','sass:main','autoprefixer','cssmin:main','imagemin','uglify', 'ftp-deploy', 'synclog']);
+	grunt.registerTask('mc', ['copy','sass','autoprefixer','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
 	// synclog
 	grunt.registerTask('synclog', 'log remote sync prefix paths.', function() {
 		console.log('Remote sync prefix paths:');

@@ -23,7 +23,9 @@ $ rm -fr ../grunt-isyn
 
 4. 开始使用吧。
 5. `grunt m` 针对手极端增加autoprefixer和sass支持
-6. `grunt mc` 手机端css默认压缩，并增加css-debug目录
+6. `grunt mc` 特殊场景，手机端css默认压缩，并增加css-debug目录
+7. `grunt debug` debug，监听sass修改
+8. `grunt md` 手机端监听sass修改
 
 ## License
 Apache license, Version 2.0
