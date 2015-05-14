@@ -154,7 +154,7 @@ module.exports = function(grunt) {
                 files: [
                     PWD + '/sass/**/*.scss'
                 ],
-                tasks: ['sass', 'autoprefixer','cssmin']
+                tasks: ['sass']
             }
 		}
 	});
