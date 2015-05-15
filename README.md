@@ -1,10 +1,15 @@
 grunt-isyn
 ==========
 
-iSyn的grunt实现版本，支持css, js, image压缩并ftp同步。
+iSyn的grunt实现版本，支持sass，css, js, image压缩并ftp同步。
 
 ## 如何使用
-进入任意项目子目录，执行`grunt`，即可压缩并同步该目录所有文件。
+进入任意项目子目录
+
+1. `grunt init` 自动初始化项目目录
+2. `grunt debug` 监听sass修改，手极端增加autoprefixer，对应`grunt md`
+3. 执行`grunt`，即可压缩并同步该目录所有文件，手极端对应`grunt m`。
+
 
 ## 初始化
 1. Clone`grunt-isyn`，复制`package.json`, `Gruntfile.js`, `iSyn.js`到项目根目录；  
@@ -20,12 +25,23 @@ $ rm -fr ../grunt-isyn
 3. 执行初始化命令；  
 安装依赖模块：`npm install`  
 初始化isyn：`node iSyn.sh`
-
 4. 开始使用吧。
-5. `grunt m` 针对手极端增加autoprefixer和sass支持
-6. `grunt mc` 特殊场景，手机端css默认压缩，并增加css-debug目录
-7. `grunt debug` debug，监听sass修改
-8. `grunt md` 手机端监听sass修改
+
+
+
+##项目初始目录结构
+```
+└── src
+    ├──	html
+    │   └── index.html
+    ├── css
+    ├── img
+    ├── js
+    ├── sass
+    │   └── style.scss
+    ├── pic
+    └── psd
+```
 
 ## License
 Apache license, Version 2.0

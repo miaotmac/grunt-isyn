@@ -21,8 +21,12 @@ module.exports = function(grunt) {
 	
 	grunt.initConfig({
 		pkg: pkg,
-
 		//copy all to dest dir
+		create: {
+			files: {
+			  	PWD: ['src/my.js']
+			},
+		},
 		copy: {
 			main: {
 				expand: true,
@@ -48,41 +52,22 @@ module.exports = function(grunt) {
 			}
 		},
 		sass: {
+            dev: {
+                expand: true,
+                cwd: PWD + '/sass',
+                src: ['*.scss'],
+                dest: buildDir + '/css-debug',
+                ext:'.css'
+            },
             main: {
                 expand: true,
                 cwd: PWD + '/sass',
                 src: ['*.scss'],
                 dest: PWD + '/css',
                 ext:'.css'
-            },
-            cssdebug: {
-            	expand: true,
-                cwd: PWD + '/sass',
-                src: ['*.scss'],
-                dest: PWD + '/css-debug',
-                ext:'.css'
             }
 
         },
-		// css minify
-		cssmin: {
-			main: {
-				files: [{
-					expand: true,
-					cwd: PWD,
-					src: ['css/*.css', 'css/!*.min.css'],
-					dest: buildDir
-				}]
-			},
-			sass: {
-				files: [{
-					expand: true,
-					cwd: PWD,
-					src: ['css/*.css'],
-					dest: PWD
-				}]
-			}
-		},
 		autoprefixer: {
 
             options: {
@@ -97,6 +82,25 @@ module.exports = function(grunt) {
                 dest: PWD
             }
         },
+        // css minify
+		cssmin: {
+			dev: {
+				files: [{
+					expand: true,
+					cwd: buildDir + '/css-debug',
+					src: ['*.css'],
+					dest: PWD + '/css'
+				}]
+			},
+			main: {
+				files: [{
+					expand: true,
+					cwd: PWD,
+					src: ['css/*.css', 'css/!*.min.css'],
+					dest: buildDir
+				}]
+			}
+		},
 		// image compress
 		imagemin: {
 			compile: {
@@ -159,13 +163,19 @@ module.exports = function(grunt) {
 		}
 	});
 	
-
+	grunt.registerTask('init',function() {
+		var dirs = ['html','css','sass','img','pic','psd','js'];
+		dirs.forEach(function (item, index) {
+			fs.mkdirSync(path.join(PWD+ '/'+ item));
+		});
+		fs.writeFileSync(path.join(PWD+ '/html/index.html'),'');
+		fs.writeFileSync(path.join(PWD+ '/sass/style.scss'),'@charset "utf-8";');
+	});
 	// default
-	grunt.registerTask('default', ['copy','cssmin:main','imagemin','uglify', 'ftp-deploy', 'synclog']);
-	grunt.registerTask('debug', ['copy','sass','synclog','watch']);
-	grunt.registerTask('md', ['copy','sass','autoprefixer','synclog','watch']);
-	grunt.registerTask('m', ['copy','sass:main','autoprefixer','cssmin:main','imagemin','uglify', 'ftp-deploy', 'synclog']);
-	grunt.registerTask('mc', ['copy','sass','autoprefixer','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
+	grunt.registerTask('default', ['copy','sass','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
+	grunt.registerTask('m', ['copy','sass','autoprefixer','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
+	grunt.registerTask('debug', ['sass','synclog','watch']);
+	grunt.registerTask('md', ['sass','autoprefixer','synclog','watch']);
 	// synclog
 	grunt.registerTask('synclog', 'log remote sync prefix paths.', function() {
 		console.log('Remote sync prefix paths:');
@@ -185,7 +195,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('test', function () {
 		console.log('test');
 	});
-
+	
 	// get ftp dest dir
 	function getFtpDest (pwd) {
 		var s = pwd.split(ISYN.localRootDirName),
@@ -238,5 +248,8 @@ module.exports = function(grunt) {
 
 		walk(root);
 		return files;
+	}
+	function isHaveSass (argument) {
+		// body...
 	}
 };
