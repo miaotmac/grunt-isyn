@@ -31,7 +31,7 @@ $ rm -fr ../grunt-isyn
 
 ##项目初始目录结构
 ```
-└── src
+└── test
     ├──	html
     │   └── index.html
     ├── css
