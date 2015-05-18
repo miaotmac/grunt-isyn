@@ -174,8 +174,8 @@ module.exports = function(grunt) {
 	// default
 	grunt.registerTask('default', ['copy','sass','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
 	grunt.registerTask('m', ['copy','sass','autoprefixer','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
-	grunt.registerTask('debug', ['sass','synclog','watch']);
-	grunt.registerTask('md', ['sass','autoprefixer','synclog','watch']);
+	grunt.registerTask('debug', ['sass:main','synclog','watch']);
+	grunt.registerTask('md', ['sass:main','autoprefixer','synclog','watch']);
 	// synclog
 	grunt.registerTask('synclog', 'log remote sync prefix paths.', function() {
 		console.log('Remote sync prefix paths:');
