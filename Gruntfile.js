@@ -52,13 +52,9 @@ module.exports = function(grunt) {
 			}
 		},
 		sass: {
-            dev: {
-                expand: true,
-                cwd: PWD + '/sass',
-                src: ['*.scss'],
-                dest: buildDir + '/css-debug',
-                ext:'.css'
-            },
+            options:{
+	          	style:'compressed'
+	        },
             main: {
                 expand: true,
                 cwd: PWD + '/sass',
@@ -84,14 +80,6 @@ module.exports = function(grunt) {
         },
         // css minify
 		cssmin: {
-			dev: {
-				files: [{
-					expand: true,
-					cwd: buildDir + '/css-debug',
-					src: ['*.css'],
-					dest: PWD + '/css'
-				}]
-			},
 			main: {
 				files: [{
 					expand: true,
@@ -174,8 +162,8 @@ module.exports = function(grunt) {
 	// default
 	grunt.registerTask('default', ['copy','sass','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
 	grunt.registerTask('m', ['copy','sass','autoprefixer','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
-	grunt.registerTask('debug', ['sass:main','synclog','watch']);
-	grunt.registerTask('md', ['sass:main','autoprefixer','synclog','watch']);
+	grunt.registerTask('debug', ['sass','synclog','watch']);
+	grunt.registerTask('md', ['sass','autoprefixer','synclog','watch']);
 	// synclog
 	grunt.registerTask('synclog', 'log remote sync prefix paths.', function() {
 		console.log('Remote sync prefix paths:');
