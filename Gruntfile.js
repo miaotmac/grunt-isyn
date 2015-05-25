@@ -52,14 +52,18 @@ module.exports = function(grunt) {
 			}
 		},
 		sass: {
-            options:{
-	          	style:'compressed'
-	        },
             main: {
                 expand: true,
                 cwd: PWD + '/sass',
                 src: ['*.scss'],
                 dest: PWD + '/css',
+                ext:'.css'
+            },
+            debug:{
+            	expand: true,
+                cwd: PWD + '/sass',
+                src: ['*.scss'],
+                dest: PWD + '/css-debug',
                 ext:'.css'
             }
 
@@ -86,6 +90,14 @@ module.exports = function(grunt) {
 					cwd: PWD,
 					src: ['css/*.css', 'css/!*.min.css'],
 					dest: buildDir
+				}]
+			},
+			debug:{
+				files: [{
+					expand: true,
+					cwd: PWD + '/css-debug',
+					src: ['*.css'],
+					dest: PWD + '/css'
 				}]
 			}
 		},
