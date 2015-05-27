@@ -22,11 +22,6 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: pkg,
 		//copy all to dest dir
-		create: {
-			files: {
-			  	PWD: ['src/my.js']
-			},
-		},
 		copy: {
 			main: {
 				expand: true,
@@ -55,14 +50,14 @@ module.exports = function(grunt) {
             main: {
                 expand: true,
                 cwd: PWD + '/sass',
-                src: ['*.scss'],
+                src: ['**/*.scss'],
                 dest: PWD + '/css',
                 ext:'.css'
             },
             debug:{
             	expand: true,
                 cwd: PWD + '/sass',
-                src: ['*.scss'],
+                src: ['**/*.scss'],
                 dest: PWD + '/css-debug',
                 ext:'.css'
             }
@@ -88,7 +83,7 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: PWD,
-					src: ['css/*.css', 'css/!*.min.css'],
+					src: ['css/**/*.css', 'css/!*.min.css'],
 					dest: buildDir
 				}]
 			},
@@ -96,9 +91,22 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: PWD + '/css-debug',
-					src: ['*.css'],
+					src: ['**/*.css'],
 					dest: PWD + '/css'
 				}]
+			}
+		},
+		replace:{
+			dist: {
+				src: buildDir + '/css/**/*.css',
+				overwrite: true,
+				replacements: [{
+			      	from: /\(.*\.\//g, 
+			      	to: function () {
+        				return '(/' + path.relative(process.env.HOME,PWD) + '/';
+      				}
+			    }]
+
 			}
 		},
 		// image compress
@@ -173,9 +181,12 @@ module.exports = function(grunt) {
 	});
 	// default
 	grunt.registerTask('default', ['copy','sass','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
-	grunt.registerTask('m', ['copy','sass','autoprefixer','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
+	grunt.registerTask('m', ['copy','sass','autoprefixer','cssmin','imagemin','uglify','replace','ftp-deploy', 'synclog']);
 	grunt.registerTask('debug', ['sass','synclog','watch']);
 	grunt.registerTask('md', ['sass','autoprefixer','synclog','watch']);
+	//replace
+	grunt.registerTask('rp', ['copy','sass','cssmin','imagemin','uglify', 'replace','ftp-deploy', 'synclog']);
+	grunt.registerTask('mrp', ['copy','sass','autoprefixer','cssmin','imagemin','uglify','replace','ftp-deploy', 'synclog']);
 	// synclog
 	grunt.registerTask('synclog', 'log remote sync prefix paths.', function() {
 		console.log('Remote sync prefix paths:');
