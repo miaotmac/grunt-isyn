@@ -98,12 +98,12 @@ module.exports = function(grunt) {
 		},
 		replace:{
 			dist: {
-				src: buildDir + '/css/**/*.css',
+				src: [buildDir + 'css/**/*.css', buildDir + '/html/**/*.html'] ,
 				overwrite: true,
 				replacements: [{
-			      	from: /\(\.*\.\//g, 
+			      	from: /\.*\.\/img/g, 
 			      	to: function () {
-        				return '(/' + path.relative(process.env.HOME,PWD) + '/';
+        				return '/' + path.relative(process.env.HOME,PWD) + '/img';
       				}
 			    }]
 
@@ -174,10 +174,10 @@ module.exports = function(grunt) {
 	grunt.registerTask('init',function() {
 		var dirs = ['html','css','sass','img','pic','psd','js'];
 		dirs.forEach(function (item, index) {
-			fs.mkdirSync(path.join(PWD+ '/'+ item));
+			fs.mkdirSync(path.join(PWD + '/'+ item));
 		});
-		fs.writeFileSync(path.join(PWD+ '/html/index.html'),'');
-		fs.writeFileSync(path.join(PWD+ '/sass/style.scss'),'@charset "utf-8";');
+		fs.writeFileSync(path.join(PWD + '/html/index.html'),'');
+		fs.writeFileSync(path.join(PWD + '/sass/style.scss'),'@charset "utf-8";');
 	});
 	// default
 	grunt.registerTask('default', ['copy','sass','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
@@ -259,8 +259,5 @@ module.exports = function(grunt) {
 
 		walk(root);
 		return files;
-	}
-	function isHaveSass (argument) {
-		// body...
 	}
 };

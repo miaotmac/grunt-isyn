@@ -9,6 +9,7 @@ iSyn的grunt实现版本，支持sass，css, js, image压缩并ftp同步。
 1. `grunt init` 自动初始化项目目录
 2. `grunt debug` 监听sass修改，手极端增加autoprefixer，对应`grunt md`
 3. `grunt`，即可压缩并同步该目录所有文件，手极端对应`grunt m`。
+4. `grunt rp`，即可压缩并同步该目录所有文件，并会自动替换图片相对路径，手极端对应`grunt mrp`。
 
 
 ## 初始化
