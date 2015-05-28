@@ -101,7 +101,7 @@ module.exports = function(grunt) {
 				src: buildDir + '/css/**/*.css',
 				overwrite: true,
 				replacements: [{
-			      	from: /\(.*\.\//g, 
+			      	from: /\(\.*\.\//g, 
 			      	to: function () {
         				return '(/' + path.relative(process.env.HOME,PWD) + '/';
       				}
@@ -181,7 +181,7 @@ module.exports = function(grunt) {
 	});
 	// default
 	grunt.registerTask('default', ['copy','sass','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
-	grunt.registerTask('m', ['copy','sass','autoprefixer','cssmin','imagemin','uglify','replace','ftp-deploy', 'synclog']);
+	grunt.registerTask('m', ['copy','sass','autoprefixer','cssmin','imagemin','uglify','ftp-deploy', 'synclog']);
 	grunt.registerTask('debug', ['sass','synclog','watch']);
 	grunt.registerTask('md', ['sass','autoprefixer','synclog','watch']);
 	//replace
