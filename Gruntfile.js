@@ -151,7 +151,15 @@ module.exports = function(grunt) {
 				exclusions: ['.DS_Store', 'Thumbs.db']
 			}
 		},
+		includereplace: {
+            html: {
+                expand: true,
+                cwd: PWD +'/html/src',
+                src: ['**/*.html'],
+                dest: PWD + '/html'
 
+            }
+        },
 		// clear build files
 		clean: {
 			build: {
@@ -161,16 +169,49 @@ module.exports = function(grunt) {
 				src: buildDir
 			}
 		},
+		connect: {
+            options: {
+                port: 9000,
+                hostname: 'localhost', //默认就是这个值，可配置为本机某个 IP，localhost 或域名
+                livereload: 35729  //声明给 watch 监听的端口
+            },
+ 
+            server: {
+                options: {
+                    open: true, //自动打开网页 http://
+                    base: [
+                        PWD  //主目录
+                    ]
+                }
+            }
+        },
 		watch:{
 			css: {
                 files: [
                     PWD + '/sass/**/*.scss'
                 ],
-                tasks: ['sass']
+                tasks: ['sass'],
+                options: {
+                    livereload: true
+                }
+            },
+            include: {
+                files: [
+                    PWD + '/html/src/**/*.html',
+                    PWD + '/html/include/**/*.html',
+                ],
+                tasks: ['includereplace'],
+                options: {
+                    livereload: true
+                }
             }
+
 		}
 	});
-	
+	grunt.registerTask('server', [
+        'connect:server',
+        'watch'
+    ]);
 	grunt.registerTask('init',function() {
 		var dirs = ['html','css','sass','img','pic','psd','js'];
 		dirs.forEach(function (item, index) {
@@ -182,8 +223,8 @@ module.exports = function(grunt) {
 	// default
 	grunt.registerTask('default', ['copy','sass','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
 	grunt.registerTask('m', ['copy','sass','autoprefixer','cssmin','imagemin','uglify','ftp-deploy', 'synclog']);
-	grunt.registerTask('debug', ['sass','synclog','watch']);
-	grunt.registerTask('md', ['sass','autoprefixer','synclog','watch']);
+	grunt.registerTask('debug', ['sass','synclog','server']);
+	grunt.registerTask('md', ['sass','autoprefixer','synclog','server']);
 	//replace
 	grunt.registerTask('rp', ['copy','sass','cssmin','imagemin','uglify', 'replace','ftp-deploy', 'synclog']);
 	grunt.registerTask('mrp', ['copy','sass','autoprefixer','cssmin','imagemin','uglify','replace','ftp-deploy', 'synclog']);
