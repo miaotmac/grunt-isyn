@@ -1,7 +1,7 @@
 grunt-isyn
 ==========
 
-iSyn的grunt实现版本，支持sass，css, js, image压缩，替换img相对路径，ftp同步，并支持实时刷新。
+iSyn的grunt实现版本，支持sass，css, js, image压缩，使用include引用html，替换img相对路径，ftp同步，并支持实时刷新。
 
 ## 如何使用
 进入任意项目子目录，执行以下命令：
