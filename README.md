@@ -27,6 +27,7 @@ $ rm -fr ../grunt-isyn
 安装依赖模块：`npm install`  
 初始化isyn：`node iSyn.sh`
 4. 开始使用吧。
+5. 实时刷新可以用/vipportal/test/html/type.html做测试http://localhost:9000/html/type.html
 
 
 
@@ -62,5 +63,6 @@ $ rm -fr ../grunt-isyn
     ├── pic
     └── psd
 ```
+
 ## License
 Apache license, Version 2.0
