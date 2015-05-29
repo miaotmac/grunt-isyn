@@ -64,6 +64,7 @@ $ rm -fr ../grunt-isyn
     └── psd
 ```
 语法很简单：
+
 1. 引用@@include('../include/header.html',{"name": "type","desc": "文本"})
 2. header里使用变量@@name
 ## License
