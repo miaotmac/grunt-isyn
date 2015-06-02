@@ -1,7 +1,7 @@
 grunt-isyn
 ==========
 
-iSyn的grunt实现版本，支持sass，css, js, image压缩，替换img相对路径，ftp同步，并支持实时刷新。
+iSyn的grunt实现版本，支持sass，css, js, image压缩，使用include引用html，替换img相对路径，ftp同步，并支持实时刷新。
 
 ## 如何使用
 进入任意项目子目录，执行以下命令：
@@ -45,7 +45,7 @@ $ rm -fr ../grunt-isyn
     ├── pic
     └── psd
 ```
-需要用到include-replace插件：
+需要用到include-replace插件的目录结构：
 
 ```
 └── test
@@ -64,6 +64,11 @@ $ rm -fr ../grunt-isyn
     ├── pic
     └── psd
 ```
+语法很简单：
+
+1. 引用@@include('../include/header.html',{"name": "type","desc": "文本"})
+2. header里使用变量@@name
+
 
 ## License
 Apache license, Version 2.0
