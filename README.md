@@ -32,7 +32,10 @@ $ rm -fr ../grunt-isyn
 
 
 
-##项目初始目录结构
+##项目初始目录结构：
+
+注意文件名用下划线，css用中划线
+
 ```
 └── test
     ├── html
@@ -45,29 +48,29 @@ $ rm -fr ../grunt-isyn
     ├── pic
     └── psd
 ```
-需要用到include-replace插件的目录结构：
+
+需要用到其他目录结构：
 
 ```
 └── test
     ├── html
     │   └── index.html
-    │   └── src
-    │  		  └── index.html
+    ├── css
+    ├── img
+    ├── js
+    ├── sass
+    │   └── style.scss
+    ├── pic
+    ├── psd
+   	├── sprite 雪碧图小图
+    ├── jinja 模板引擎
+    │ └── index.html
     │   └── include
-   	│ 		  └── header.html
-   	│ 		  └── footer.html
-    ├── css
-    ├── img
-    ├── js
-    ├── sass
-    │   └── style.scss
-    ├── pic
-    └── psd
+   	│  		  ├── header.html
+   	│ 	 	  └── footer.html
+    └── component 项目公用组件
+    
 ```
-语法很简单：
-
-1. 引用@@include('../include/header.html',{"name": "type","desc": "文本"})
-2. header里使用变量@@name
 
 
 ## License

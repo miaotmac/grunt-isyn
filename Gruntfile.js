@@ -194,13 +194,13 @@ module.exports = function(grunt) {
                 ],
                 tasks: ['sass']
             },
-            include: {
-                files: [
-                    PWD + '/html/src/**/*.html',
-                    PWD + '/html/include/**/*.html',
-                ],
-                tasks: ['includereplace']
-            },
+            // include: {
+            //     files: [
+            //         PWD + '/html/src/**/*.html',
+            //         PWD + '/html/include/**/*.html',
+            //     ],
+            //     tasks: ['includereplace']
+            // },
             livereload:{ 
                 options:{  
                     livereload: true  
