@@ -115,7 +115,7 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: PWD,
-					src: ['**/*.{png,jpg,gif}'],
+					src: ['**/*.{jpg,gif}'],
 					dest: PWD
 				}]
 			}
@@ -138,7 +138,7 @@ module.exports = function(grunt) {
 		},
 
 		// ftp sync
-		'ftp-deploy': {
+		'ftpush': {
 			build: {
 				auth: {
 					host: ISYN.ftp.host,
@@ -148,7 +148,9 @@ module.exports = function(grunt) {
 				},
 				src: buildDir,
 				dest: getFtpDest(PWD),
-				exclusions: ['.DS_Store', 'Thumbs.db']
+				exclusions: ['.DS_Store', 'Thumbs.db'],
+                simple: true,
+                useList: true
 			}
 		},
 		includereplace: {
@@ -172,7 +174,7 @@ module.exports = function(grunt) {
 		connect: {
             options: {
                 port: 9000,
-                hostname: 'localhost', //默认就是这个值，可配置为本机某个 IP，localhost 或域名
+                hostname: '127.0.0.1', //默认就是这个值，可配置为本机某个 IP，localhost 或域名
                 livereload: 35729  //声明给 watch 监听的端口
             },
  
@@ -180,7 +182,7 @@ module.exports = function(grunt) {
                 options: {
                     open: true, //自动打开网页 http://
                     base: [
-                        PWD  //主目录
+                        PWD+ '' //主目录
                     ]
                 }
             }
@@ -190,21 +192,21 @@ module.exports = function(grunt) {
                 files: [
                     PWD + '/sass/**/*.scss'
                 ],
-                tasks: ['sass'],
-                options: {
-                    livereload: true
-                }
+                tasks: ['sass']
             },
             include: {
                 files: [
                     PWD + '/html/src/**/*.html',
                     PWD + '/html/include/**/*.html',
                 ],
-                tasks: ['includereplace'],
-                options: {
-                    livereload: true
-                }
-            }
+                tasks: ['includereplace']
+            },
+            livereload:{ 
+                options:{  
+                    livereload: true  
+                },  
+                files:[ PWD + '/css/**/*.css', PWD +'/js/**/*.js', PWD + '/html/**/*.html']  
+            }  
 
 		}
 	});
@@ -221,13 +223,14 @@ module.exports = function(grunt) {
 		fs.writeFileSync(path.join(PWD + '/sass/style.scss'),'@charset "utf-8";');
 	});
 	// default
-	grunt.registerTask('default', ['copy','sass','cssmin','imagemin','uglify', 'ftp-deploy', 'synclog']);
-	grunt.registerTask('m', ['copy','sass','autoprefixer','cssmin','imagemin','uglify','ftp-deploy', 'synclog']);
-	grunt.registerTask('debug', ['sass','synclog','server']);
-	grunt.registerTask('md', ['sass','autoprefixer','synclog','server']);
+    grunt.registerTask('default', ['sass','synclog','server','synclog']);
+    grunt.registerTask('m', ['sass','autoprefixer','synclog','server','synclog']);
+    //图片压缩
+    grunt.registerTask('img', ['imagemin','pngmin','synclog']);
+
+    grunt.registerTask('push', ['copy','cssmin','ftpush','synclog']);
 	//replace
-	grunt.registerTask('rp', ['copy','sass','cssmin','imagemin','uglify', 'replace','ftp-deploy', 'synclog']);
-	grunt.registerTask('mrp', ['copy','sass','autoprefixer','cssmin','imagemin','uglify','replace','ftp-deploy', 'synclog']);
+	grunt.registerTask('rp', ['copy','cssmin','replace','ftpush', 'synclog']);
 	// synclog
 	grunt.registerTask('synclog', 'log remote sync prefix paths.', function() {
 		console.log('Remote sync prefix paths:');
