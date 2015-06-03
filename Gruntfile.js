@@ -51,7 +51,10 @@ module.exports = function(grunt) {
                 cwd: PWD + '/sass',
                 src: ['**/*.scss'],
                 dest: PWD + '/css',
-                ext:'.css'
+                ext:'.css',
+                options: {                       // Target options
+                    style: 'compressed'
+                }
             },
             debug:{
             	expand: true,
@@ -82,16 +85,8 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: PWD,
-					src: ['css/**/*.css', 'css/!*.min.css'],
+					src: ['**/*.css', '!*.min.css'],
 					dest: buildDir
-				}]
-			},
-			debug:{
-				files: [{
-					expand: true,
-					cwd: PWD + '/css-debug',
-					src: ['**/*.css'],
-					dest: PWD + '/css'
 				}]
 			}
 		},
@@ -222,10 +217,10 @@ module.exports = function(grunt) {
 		fs.writeFileSync(path.join(PWD + '/sass/style.scss'),'@charset "utf-8";');
 	});
 	// default
-    grunt.registerTask('default', ['sass','synclog','server','synclog']);
-    grunt.registerTask('m', ['sass','autoprefixer','synclog','server','synclog']);
+    grunt.registerTask('default', ['sass','server']);
+    grunt.registerTask('m', ['sass','autoprefixer','server']);
     //图片压缩
-    grunt.registerTask('img', ['imagemin','pngmin','synclog']);
+    grunt.registerTask('img', ['imagemin','pngmin']);
     grunt.registerTask('push','传文件',function(){
         if(this.args.length){
             pushDir = this.args;
@@ -235,7 +230,13 @@ module.exports = function(grunt) {
         grunt.task.run('copy','cssmin','ftpush','synclog');
     });
 	//replace
-	grunt.registerTask('rp', ['copy','cssmin','replace','ftpush', 'synclog']);
+	grunt.registerTask('rp','替换url并传文件',function(){
+        if(this.args.length){
+            pushDir = this.args;
+            grunt.config('copy.main.src', pushDir);
+        }
+        grunt.task.run('copy','cssmin','replace','ftpush','synclog');
+    });
 	// synclog
 	grunt.registerTask('synclog', 'log remote sync prefix paths.', function() {
 		console.log('Remote sync prefix paths:');
