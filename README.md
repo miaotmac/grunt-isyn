@@ -1,17 +1,16 @@
 grunt-isyn
 ==========
 
-iSyn的grunt实现版本，支持sass，css, js, image压缩，使用include引用html，替换img相对路径，ftp同步，并支持实时刷新。
+iSyn的grunt实现版本，支持sass，css, js, image压缩，替换img相对路径，ftp同步，并支持实时刷新。
 
 ## 如何使用
 进入任意项目子目录，执行以下命令：
 
 1. `grunt init` 自动初始化项目目录
-2. `grunt` 默认监听sass修改，手极端增加autoprefixer，对应`grunt m`
+2. `grunt` 默认监听sass修改，手极端增加autoprefixer，对应`grunt m`，开启127.0.0.1
 3. `grunt img` 压缩图片
 4. `grunt push` 提交ftp，默认提交当前目录，如果要提交指定文件使用
 `grunt push:bg.png:vip/vip_9.png`，冒号后面是文件相对当前目录的路径
-6. `grunt rp`，自动替换图片相对路径并提交ftp。
 
 
 ## 初始化
