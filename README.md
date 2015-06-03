@@ -7,7 +7,7 @@ iSyn的grunt实现版本，支持sass，css, js, image压缩，替换img相对�
 进入任意项目子目录，执行以下命令：
 
 1. `grunt init` 自动初始化项目目录
-2. `grunt` 默认监听sass修改，必须在项目根目录执行，手极端增加autoprefixer，对应命令为`grunt m`，开启127.0.0.1
+2. `grunt` 默认监听sass修改，开启127.0.0.1，必须在项目根目录执行，手极端增加autoprefixer，对应命令为`grunt m`
 3. `grunt img` 压缩图片
 4. `grunt push` 提交ftp，默认提交当前目录，如果要提交指定文件使用
 `grunt push:bg.png:vip/vip_9.png`，冒号后面是文件相对当前目录的路径
