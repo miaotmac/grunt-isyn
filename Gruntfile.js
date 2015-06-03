@@ -16,17 +16,16 @@ module.exports = function(grunt) {
 		ISYN = pkg.isyn;
 
 	var PWD = process.env.PWD, // current cmd dir
-		buildDir = path.join(path.resolve(PWD, '../'), path.basename(PWD) + '_tmp'); // tmp folder
-	
+		buildDir = path.join(path.resolve(PWD, '../'), path.basename(PWD) + '_tmp'), // tmp folder
+	    pushDir = ['**/*', '!**/node_modules/**', '!**/.svn/**', '!**/.git/**'];
 	
 	grunt.initConfig({
-		pkg: pkg,
 		//copy all to dest dir
 		copy: {
 			main: {
 				expand: true,
 				cwd: PWD,
-				src: ['**/*', '!**/node_modules/**', '!**/.svn/**', '!**/.git/**'],
+				src: pushDir,
 				dest: buildDir
 			}
 		},
@@ -182,7 +181,7 @@ module.exports = function(grunt) {
                 options: {
                     open: true, //自动打开网页 http://
                     base: [
-                        PWD+ '' //主目录
+                        PWD + '' //主目录
                     ]
                 }
             }
@@ -194,13 +193,13 @@ module.exports = function(grunt) {
                 ],
                 tasks: ['sass']
             },
-            // include: {
-            //     files: [
-            //         PWD + '/html/src/**/*.html',
-            //         PWD + '/html/include/**/*.html',
-            //     ],
-            //     tasks: ['includereplace']
-            // },
+            include: {
+                files: [
+                    PWD + '/html/src/**/*.html',
+                    PWD + '/html/include/**/*.html',
+                ],
+                tasks: ['includereplace']
+            },
             livereload:{ 
                 options:{  
                     livereload: true  
@@ -227,16 +226,22 @@ module.exports = function(grunt) {
     grunt.registerTask('m', ['sass','autoprefixer','synclog','server','synclog']);
     //图片压缩
     grunt.registerTask('img', ['imagemin','pngmin','synclog']);
-
-    grunt.registerTask('push', ['copy','cssmin','ftpush','synclog']);
+    grunt.registerTask('push','传文件',function(){
+        if(this.args.length){
+            pushDir = this.args;
+            grunt.config('copy.main.src', pushDir);
+        }
+        
+        grunt.task.run('copy','cssmin','ftpush','synclog');
+    });
 	//replace
 	grunt.registerTask('rp', ['copy','cssmin','replace','ftpush', 'synclog']);
 	// synclog
 	grunt.registerTask('synclog', 'log remote sync prefix paths.', function() {
 		console.log('Remote sync prefix paths:');
-
 		var files = walkDirectory(path.resolve(PWD, buildDir));
-		files.forEach(function (item, index) {
+		
+        files.forEach(function (item, index) {
 			item = path.relative(buildDir, item);
 			item = path.join(getPrefixPath(PWD), item);
 			console.log(item.green);
