@@ -142,7 +142,8 @@ module.exports = function(grunt) {
 				},
 				src: buildDir,
 				dest: getFtpDest(PWD),
-				exclusions: ['.DS_Store', 'Thumbs.db']
+				exclusions: ['.DS_Store', 'Thumbs.db'],
+                simple: true
 			}
 		},
 		includereplace: {
