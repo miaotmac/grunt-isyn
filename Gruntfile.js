@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 	// 自动加载 grunt 任务
     require('load-grunt-tasks')(grunt);
 
-
+    var findup = require('findup-sync'); 
 	var path = require('path'),
 		fs = require('fs-extra'),
 		log = grunt.log,
@@ -84,7 +84,7 @@ module.exports = function(grunt) {
 			main: {
 				files: [{
 					expand: true,
-					cwd: PWD,
+					cwd: buildDir,
 					src: ['**/*.css', '!*.min.css'],
 					dest: buildDir
 				}]
@@ -142,9 +142,7 @@ module.exports = function(grunt) {
 				},
 				src: buildDir,
 				dest: getFtpDest(PWD),
-				exclusions: ['.DS_Store', 'Thumbs.db'],
-                simple: true,
-                useList: true
+				exclusions: ['.DS_Store', 'Thumbs.db']
 			}
 		},
 		includereplace: {
@@ -230,13 +228,13 @@ module.exports = function(grunt) {
         grunt.task.run('copy','cssmin','ftpush','synclog');
     });
 	//replace
-	grunt.registerTask('rp','替换url并传文件',function(){
-        if(this.args.length){
-            pushDir = this.args;
-            grunt.config('copy.main.src', pushDir);
-        }
-        grunt.task.run('copy','cssmin','replace','ftpush','synclog');
-    });
+	// grunt.registerTask('rp','替换url并传文件',function(){
+ //        if(this.args.length){
+ //            pushDir = this.args;
+ //            grunt.config('copy.main.src', pushDir);
+ //        }
+ //        grunt.task.run('copy','cssmin','replace','ftpush','synclog');
+ //    });
 	// synclog
 	grunt.registerTask('synclog', 'log remote sync prefix paths.', function() {
 		console.log('Remote sync prefix paths:');
@@ -254,7 +252,8 @@ module.exports = function(grunt) {
 
 	// test 
 	grunt.registerTask('test', function () {
-		console.log('test');
+        var gruntpath = findup('/');
+		console.log(gruntpath);
 	});
 	
 	// get ftp dest dir
