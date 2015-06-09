@@ -5,22 +5,28 @@
 'use strict';
 
 module.exports = function(grunt) {
+
 	// 自动加载 grunt 任务
     require('load-grunt-tasks')(grunt);
 
-    var findup = require('findup-sync'); 
 	var path = require('path'),
 		fs = require('fs-extra'),
 		log = grunt.log,
 		pkg = grunt.file.readJSON('package.json'),
 		ISYN = pkg.isyn;
 
-	var PWD = process.env.PWD, // current cmd dir
+	var PWD = process.env.PWD || process.cwd(),  // 获取当前文件路径，兼容 windows
 		buildDir = path.join(path.resolve(PWD, '../'), path.basename(PWD) + '_tmp'), // tmp folder
-	    pushDir = ['**/*', '!**/node_modules/**', '!**/.svn/**', '!**/.git/**'];
+	    pushDir = ['**/*', '!**/node_modules/**', '!**/.svn/**', '!**/.git/**', '!**/.sass-cache/**'];
 	
+
+
+	// grunt 初始化任务
+	//=================
+
 	grunt.initConfig({
-		//copy all to dest dir
+
+		// 拷贝文件到指定目录
 		copy: {
 			main: {
 				expand: true,
@@ -30,11 +36,12 @@ module.exports = function(grunt) {
 			}
 		},
 
+		// 代码混淆
 		uglify: {
 			options: {
-		      mangle: {
-		        except: ['zepto','$','module','require','exports','define']
-		      }
+				mangle: {
+					except: ['zepto','$','module','require','exports','define']
+				}
 		    },
 			dist: {
 				files: [{
@@ -45,6 +52,8 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
+
+		// sass 编译
 		sass: {
             main: {
                 expand: true,
@@ -52,7 +61,7 @@ module.exports = function(grunt) {
                 src: ['**/*.scss'],
                 dest: PWD + '/css',
                 ext:'.css',
-                options: {                       // Target options
+                options: {				// Target options
                     style: 'compressed'
                 }
             },
@@ -63,14 +72,27 @@ module.exports = function(grunt) {
                 dest: PWD + '/css-debug',
                 ext:'.css'
             }
-
         },
-		autoprefixer: {
 
+        // Compass 编译 sass（支持雪碧图合并）
+        compass: {
+		    dist: {
+		      options: {
+		        sassDir: 'sass',
+		        cssDir: 'css',
+		        sourcemap: false,
+		        config: 'config.rb',
+		        specify: ['sass/**/*.scss'],	// 这里可以指定要编译的文件
+		        outputStyle: 'compressed'
+		      }
+		    }
+		},
+
+		// 自定添加前缀
+		autoprefixer: {
             options: {
                 browsers: ['last 2 versions','ios 5','android 2.3']
             },
-
             // prefix all files
             multiple_files: {
                 expand: true,
@@ -79,7 +101,8 @@ module.exports = function(grunt) {
                 dest: PWD
             }
         },
-        // css minify
+
+        // CSS 压缩
 		cssmin: {
 			main: {
 				files: [{
@@ -90,6 +113,8 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
+
+		// 替换相对路径
 		replace:{
 			dist: {
 				src: [buildDir + 'css/**/*.css', buildDir + '/html/**/*.html'] ,
@@ -100,10 +125,10 @@ module.exports = function(grunt) {
         				return '/' + path.relative(process.env.HOME,PWD) + '/img';
       				}
 			    }]
-
 			}
 		},
-		// image compress
+
+		// JPG/GIF 图片压缩
 		imagemin: {
 			compile: {
 				files: [{
@@ -115,7 +140,7 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// png image compress
+		// PNG 图片压缩
 		pngmin: {
 			compile: {
 				options: {
@@ -131,7 +156,7 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// ftp sync
+		// FTP 提交
 		'ftpush': {
 			build: {
 				auth: {
@@ -146,6 +171,8 @@ module.exports = function(grunt) {
                 simple: true
 			}
 		},
+
+		// HTML 合并
 		includereplace: {
             html: {
                 expand: true,
@@ -155,7 +182,8 @@ module.exports = function(grunt) {
 
             }
         },
-		// clear build files
+
+		// 删除临时编译目录
 		clean: {
 			build: {
 				options: {
@@ -164,13 +192,14 @@ module.exports = function(grunt) {
 				src: buildDir
 			}
 		},
+
+		// 开启服务器
 		connect: {
             options: {
                 port: 9000,
-                hostname: '127.0.0.1', //默认就是这个值，可配置为本机某个 IP，localhost 或域名
-                livereload: 35729  //声明给 watch 监听的端口
+                hostname: '127.0.0.1', 	//默认就是这个值，可配置为本机某个 IP，localhost 或域名
+                livereload: 35729  		//声明给 watch 监听的端口
             },
- 
             server: {
                 options: {
                     open: true, //自动打开网页 http://
@@ -180,12 +209,14 @@ module.exports = function(grunt) {
                 }
             }
         },
+
+        // 监听文件变动
 		watch:{
 			css: {
                 files: [
                     PWD + '/sass/**/*.scss'
                 ],
-                tasks: ['sass']
+                tasks: ['compass']
             },
             include: {
                 files: [
@@ -203,10 +234,20 @@ module.exports = function(grunt) {
 
 		}
 	});
+
+
+
+	// grunt 执行命令
+	//=================
+
+	// 启动服务器及监听
 	grunt.registerTask('server', [
         'connect:server',
         'watch'
     ]);
+
+
+	// 初始化文件目录
 	grunt.registerTask('init',function() {
 		var dirs = ['html','css','sass','img','pic','psd','js'];
 		dirs.forEach(function (item, index) {
@@ -215,19 +256,27 @@ module.exports = function(grunt) {
 		fs.writeFileSync(path.join(PWD + '/html/index.html'),'');
 		fs.writeFileSync(path.join(PWD + '/sass/style.scss'),'@charset "utf-8";');
 	});
+
+
 	// default
-    grunt.registerTask('default', ['sass','server']);
-    grunt.registerTask('m', ['sass','autoprefixer','server']);
-    //图片压缩
+    grunt.registerTask('default', ['compass','server']);
+
+    // defaut + 添加前缀
+    grunt.registerTask('m', ['compass','autoprefixer','server']);
+
+    // 图片压缩
     grunt.registerTask('img', ['imagemin','pngmin']);
+
+    // FTP 提交
     grunt.registerTask('push','传文件',function(){
         if(this.args.length){
             pushDir = this.args;
             grunt.config('copy.main.src', pushDir);
         }
-        
         grunt.task.run('copy','cssmin','ftpush','synclog');
     });
+
+
 	//replace
 	// grunt.registerTask('rp','替换url并传文件',function(){
  //        if(this.args.length){
@@ -236,7 +285,9 @@ module.exports = function(grunt) {
  //        }
  //        grunt.task.run('copy','cssmin','replace','ftpush','synclog');
  //    });
-	// synclog
+
+
+	// 输出提交目录
 	grunt.registerTask('synclog', 'log remote sync prefix paths.', function() {
 		console.log('Remote sync prefix paths:');
 		var files = walkDirectory(path.resolve(PWD, buildDir));
@@ -251,21 +302,28 @@ module.exports = function(grunt) {
 		grunt.task.run('clean');
 	});
 
+
+
 	// test 
 	grunt.registerTask('test', function () {
-        var gruntpath = findup('/');
-		console.log(gruntpath);
 	});
+
+
+
 	
+
+
+
+	// 函数
+	//==================
+
 	// get ftp dest dir
 	function getFtpDest (pwd) {
 		var s = pwd.split(ISYN.localRootDirName),
 			dest = '/';
-		
 		if (s[1]) {
 			dest = path.resolve(dest, s[1]);
 		}
-
 		return dest;
 	}
 
@@ -306,8 +364,8 @@ module.exports = function(grunt) {
 				}
 			}
 		}
-
 		walk(root);
 		return files;
 	}
+
 };
