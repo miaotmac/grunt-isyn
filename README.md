@@ -14,7 +14,7 @@ iSyn的grunt实现版本，支持sass，css, js, image压缩，替换img相对�
 
 
 ## 初始化
-1. Clone`grunt-isyn`，复制`package.json`, `Gruntfile.js`, `iSyn.js`到项目根目录；  
+1. Clone`grunt-isyn`，复制`package.json`, `Gruntfile.js`, `iSyn.js`到vipstyle目录（win环境需要放在每个项目的根目录）；  
 e.g.  
 ```
 $ git clone https://github.com/QQVIPTeam/grunt-isyn.git
